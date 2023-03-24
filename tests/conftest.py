@@ -18,7 +18,7 @@ pytest_plugins = [
 
 @pytest.fixture()
 def authenticated_user(client):
-    """Creates a user and logs in."""
+    """Authenticated user."""
     user = User.objects.create_user(  # noqa:S106
         username='testuser', password='testpassword',
     )
