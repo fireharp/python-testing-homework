@@ -6,7 +6,8 @@ It may be also used for extending doctest's context:
 2. https://docs.pytest.org/en/latest/doctest.html
 """
 import pytest
-from django.contrib.auth.models import User
+
+from server.apps.identity.models import User
 
 pytest_plugins = [
     # Should be the first custom one:
@@ -17,12 +18,13 @@ pytest_plugins = [
 
 
 @pytest.fixture()
+@pytest.mark.django_db()
 def authenticated_user(client):
-    """Authenticated user."""
+    """Authenticated user."""  # noqa: D401
     user = User.objects.create_user(  # noqa:S106
-        username='testuser', password='testpassword',
+        email='test@email.com', password='testpassword',
     )
-    client.login(username='testuser', password='testpassword')  # noqa: S106
+    client.login(email='test@email.com', password='testpassword')  # noqa: S106
     return user
 
 
