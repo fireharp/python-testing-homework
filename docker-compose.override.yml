@@ -17,6 +17,9 @@ services:
       - "5432:5432"
 
   web:
+    environment:
+      - JSON_SERVER_HOST=json-server
+      - JSON_SERVER_PORT=3000
     ports:
       # We only bind ports directly in development:
       - "8000:8000"

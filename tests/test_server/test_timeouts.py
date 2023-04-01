@@ -3,11 +3,16 @@ from http import HTTPStatus
 import pytest
 import requests
 
+from server.settings.components.json_server import (
+    JSON_SERVER_HOST,
+    JSON_SERVER_PORT,
+)
+
 
 def test_external_service() -> None:
-    """This test ensures that unreliable service is accessible."""
+    """This test mocks some HTTP request."""
     response = requests.get(
-        'http://0.0.0.0:3000/posts',
+        f'http://{JSON_SERVER_HOST}:{JSON_SERVER_PORT}/posts',  # noqa: WPS305
         timeout=(2, 5),
     )
 
@@ -20,7 +25,7 @@ def test_flaky_service() -> None:
     """This test ensures that unreliable service is accessible."""
     response = requests.get(
         'https://flaky.vercel.app/api/flaky',
-        timeout=(2, 5),
+        timeout=(1.5, 4),
     )
 
     assert response.status_code == HTTPStatus.OK
