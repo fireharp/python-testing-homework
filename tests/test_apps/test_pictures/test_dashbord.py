@@ -29,9 +29,7 @@ def test_valid_dashboard_with_one_favourite(
     )
     assert response.status_code == HTTPStatus.FOUND
     assert FavouritePicture.objects.get(user=user) is not None
-    assert response.url == reverse(  # type: ignore[attr-defined]
-        'pictures:dashboard',
-    )
+    assert response['location'] == reverse('pictures:dashboard')
 
 
 @pytest.mark.django_db()
@@ -60,6 +58,4 @@ def test_valid_dashboard_with_two_favourites(
     assert db_pictures[0].url == picture_data['url']
     assert db_pictures[1].foreign_id == picture_data['foreign_id']
     assert db_pictures[1].url == picture_data['url']
-    assert response.url == reverse(  # type: ignore[attr-defined]
-        'pictures:dashboard',
-    )
+    assert response['location'] == reverse('pictures:dashboard')

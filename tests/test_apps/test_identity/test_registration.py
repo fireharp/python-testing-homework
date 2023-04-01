@@ -64,7 +64,9 @@ def test_empty_birthday(
     assert_correct_user: 'UserAssertion',
 ) -> None:
     """Test that missing date of birth will not fail registration."""
-    post_data = registration_data_factory(date_of_birth='')
+    post_data = registration_data_factory(
+        date_of_birth='',  # type: ignore[arg-type]
+    )
     response = client.post(
         reverse('identity:registration'),
         data=post_data,

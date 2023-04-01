@@ -27,8 +27,8 @@ def test_valid_login(
         )
     assert response.status_code == HTTPStatus.FOUND
 
-    response.url.startswith(str(LOGIN_REDIRECT_URL))
-    response = client.get(response.url)
+    response['location'].startswith(str(LOGIN_REDIRECT_URL))
+    response = client.get(response['location'])
     assert response.status_code == HTTPStatus.OK
 
 
