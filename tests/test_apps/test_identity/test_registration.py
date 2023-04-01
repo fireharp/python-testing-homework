@@ -36,7 +36,9 @@ def test_valid_registration(
 @pytest.mark.django_db()
 @pytest.mark.parametrize(
     'field',
-    User.REQUIRED_REGISTRATION_FIELDS + [User.USERNAME_FIELD, 'password1', 'password2'],
+    User.REQUIRED_REGISTRATION_FIELDS + [
+        User.USERNAME_FIELD, 'password1', 'password2',
+    ],
 )
 def test_registration_missing_required_field(
     client: Client,
@@ -62,9 +64,7 @@ def test_empty_birthday(
     assert_correct_user: 'UserAssertion',
 ) -> None:
     """Test that missing date of birth will not fail registration."""
-    post_data = registration_data_factory(
-        **{'date_of_birth': ''},  # type: ignore[arg-type]
-    )
+    post_data = registration_data_factory(date_of_birth='')
     response = client.post(
         reverse('identity:registration'),
         data=post_data,
@@ -82,9 +82,7 @@ def test_not_valid_email(
     assert_correct_user: 'UserAssertion',
 ) -> None:
     """Test that not valid email will not fail registration."""
-    post_data = registration_data_factory(
-        **{'email': 'wrong_email'},  # type: ignore[arg-type]
-    )
+    post_data = registration_data_factory(email='wrong_email')
     response = client.post(
         reverse('identity:registration'),
         data=post_data,

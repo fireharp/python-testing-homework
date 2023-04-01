@@ -39,7 +39,7 @@ def test_with_no_existing_user(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Test that login works with no existing user."""
-    post_data = login_data_factory(**{'username': 'no_such_user@test.com'})
+    post_data = login_data_factory(username='no_such_user@test.com')
     with monkeypatch.context() as patch:
         patch.setattr(User, 'check_password', lambda *args: True)
         response = client.post(

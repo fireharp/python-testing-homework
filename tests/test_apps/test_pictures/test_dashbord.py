@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 @pytest.mark.django_db()
-def test_valid_dashboard_with_1_favourite(
+def test_valid_dashboard_with_one_favourite(
     client: Client,
     db_user: 'UserData',
     picture_data: 'PictureData',
@@ -28,12 +28,14 @@ def test_valid_dashboard_with_1_favourite(
         data=picture_data,
     )
     assert response.status_code == HTTPStatus.FOUND
-    assert FavouritePicture.objects.get(user=user)
-    assert response.url == reverse('pictures:dashboard')
+    assert FavouritePicture.objects.get(user=user) is not None
+    assert response.url == reverse(  # type: ignore[attr-defined]
+        'pictures:dashboard',
+    )
 
 
 @pytest.mark.django_db()
-def test_valid_dashboard_with_2_favourites(
+def test_valid_dashboard_with_two_favourites(
     client: Client,
     db_user: 'UserData',
     picture_data: 'PictureData',
@@ -54,9 +56,10 @@ def test_valid_dashboard_with_2_favourites(
     assert response.status_code == HTTPStatus.FOUND
     db_pictures = FavouritePicture.objects.filter(user=user).all()
     assert len(db_pictures) == 2
-    assert db_pictures[0].foreign_id == picture_data["foreign_id"]
-    assert db_pictures[0].url == picture_data["url"]
-    assert db_pictures[1].foreign_id == picture_data["foreign_id"]
-    assert db_pictures[1].url == picture_data["url"]
-    assert response.url == reverse('pictures:dashboard')
-
+    assert db_pictures[0].foreign_id == picture_data['foreign_id']
+    assert db_pictures[0].url == picture_data['url']
+    assert db_pictures[1].foreign_id == picture_data['foreign_id']
+    assert db_pictures[1].url == picture_data['url']
+    assert response.url == reverse(  # type: ignore[attr-defined]
+        'pictures:dashboard',
+    )

@@ -75,9 +75,7 @@ def test_empty_birthday(
     user = User.objects.get(email=db_user['email'])
     client.force_login(user)
 
-    post_data = update_user_data_factory(
-        **{'date_of_birth': ''},  # type: ignore[arg-type]
-    )
+    post_data = update_user_data_factory(date_of_birth='')
 
     response = client.post(
         reverse('identity:user_update'),

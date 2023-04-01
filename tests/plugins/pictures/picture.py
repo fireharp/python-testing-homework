@@ -19,7 +19,7 @@ class PictureData(TypedDict, total=False):
 
 
 @final
-class PictureDataFactory(Protocol):
+class PictureDataFactory(Protocol):  # type: ignore[misc]
     """Makes picture data."""
 
     def __call__(
@@ -27,7 +27,6 @@ class PictureDataFactory(Protocol):
         **fields: Unpack[PictureData],
     ) -> PictureData:
         """Picture data factory protocol."""
-        return PictureData(**fields)
 
 
 @pytest.fixture()
