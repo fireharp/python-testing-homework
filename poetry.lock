@@ -2437,6 +2437,24 @@ importlib-metadata = {version = ">=3.6.0", markers = "python_version < \"3.10\""
 pytest = "*"
 
 [[package]]
+name = "pytest-retry"
+version = "1.2.1"
+description = "Adds the ability to retry flaky tests in CI environments"
+category = "dev"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "pytest-retry-1.2.1.tar.gz", hash = "sha256:396b07cd38a097209718492e9d9eb70e7ef19792f051b0e444e760cc33cddc8a"},
+    {file = "pytest_retry-1.2.1-py3-none-any.whl", hash = "sha256:b94ed30e3e463e6477d9142c9c4e93370d8e0d13ae6a24af040f4c23f622ba64"},
+]
+
+[package.dependencies]
+pytest = ">=7.0.0"
+
+[package.extras]
+dev = ["black", "flake8", "isort", "mypy"]
+
+[[package]]
 name = "pytest-timeout"
 version = "2.1.0"
 description = "pytest plugin to abort hanging tests"
@@ -3252,4 +3270,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "3.9.15"
-content-hash = "0b91e56699106510bd522ee8f00dffdac3e2533fc8f506ec49193dd4b64a6446"
+content-hash = "3592baa408eead744cffa84d04bfb4ea2eca3f27e9ab5c69f90e645764143c65"

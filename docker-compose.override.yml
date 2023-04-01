@@ -12,6 +12,10 @@
 version: "3.8"
 services:
 
+  db:
+    ports:
+      - "5432:5432"
+
   web:
     ports:
       # We only bind ports directly in development:
@@ -24,6 +28,20 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
+    links:
+      - json-server
+
+  json-server:
+    build:
+      context: ./docker/json-server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+    volumes:
+      - ./json-server:/data
+    command: -H 0.0.0.0 -p 3000
 
 networks:
   # Fake API network:
