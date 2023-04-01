@@ -1,5 +1,4 @@
 import datetime as dt
-import random
 from typing import Callable, Protocol, TypedDict, final
 
 import pytest
@@ -72,7 +71,7 @@ class LoginData(TypedDict, total=False):
 
 
 @final
-class RegistrationDataFactory(Protocol):
+class RegistrationDataFactory(Protocol):  # type: ignore[misc]
     """Makes registration data."""
 
     def __call__(
@@ -80,11 +79,10 @@ class RegistrationDataFactory(Protocol):
         **fields: Unpack[RegistrationData],
     ) -> RegistrationData:
         """Registration data factory protocol."""
-        return RegistrationData(**fields)
 
 
 @final
-class LoginDataFactory(Protocol):
+class LoginDataFactory(Protocol):  # type: ignore[misc]
     """Makes login data."""
 
     def __call__(
@@ -92,25 +90,17 @@ class LoginDataFactory(Protocol):
         **fields: Unpack[LoginData],
     ) -> LoginData:
         """Login data factory protocol."""
-        return LoginData(**fields)
 
 
 @final
-class UpdateUserDataFactory(Protocol):
+class UpdateUserDataFactory(Protocol):  # type: ignore[misc]
     """Makes updated user data."""
 
     def __call__(
         self,
-        **fields: Unpack[LoginData],
-    ) -> UpdateUserData:
+        **fields: Unpack[UserData],
+    ) -> 'UpdateUserData':
         """Update user data factory protocol."""
-        return UpdateUserData(**fields)
-
-
-@pytest.fixture()
-def faker_seed():
-    """Generates random seed."""
-    return random.Random().getrandbits(32)
 
 
 @pytest.fixture()
@@ -246,7 +236,7 @@ def updated_user_data(
 
 
 @pytest.fixture()
-def db_user(user_data: 'UserData') -> 'UserData':
+def db_user(user_data: 'UserData') -> 'UserData':  # type: ignore[misc]
     """Inserts User to db and deletes after test."""
     user = User.objects.create(**user_data)
     yield user_data
@@ -259,4 +249,6 @@ def login_data(
     db_user: UserData,
 ) -> LoginData:
     """Typed dict with login data."""
-    return login_data_factory(**{'username': db_user['email'], 'password': 'password'})
+    return login_data_factory(  # noqa: S106
+        username=db_user['email'], password='password',
+    )

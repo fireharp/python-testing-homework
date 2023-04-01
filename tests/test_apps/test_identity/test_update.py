@@ -55,7 +55,9 @@ def test_update_missing_required_fields(
     user = User.objects.get(email=db_user['email'])
     client.force_login(user)
 
-    updated_user_data = update_user_data_factory(**{field: ''})
+    updated_user_data = update_user_data_factory(
+        **{field: ''},  # type: ignore[arg-type]
+    )
 
     response = client.post(
         reverse('identity:user_update'),
@@ -76,7 +78,7 @@ def test_empty_birthday(
     client.force_login(user)
 
     post_data = update_user_data_factory(
-        **{'date_of_birth': ''},  # type: ignore[arg-type]
+        date_of_birth='',  # type: ignore[arg-type]
     )
 
     response = client.post(

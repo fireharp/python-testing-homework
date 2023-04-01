@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING
 import pytest
 from django.test import Client
 from django.urls import reverse
-from server.settings.components.identity import LOGIN_REDIRECT_URL
 
 from server.apps.identity.models import User
+from server.settings.components.identity import LOGIN_REDIRECT_URL
 
 if TYPE_CHECKING:
     from tests.plugins.identity.user import LoginData, LoginDataFactory
@@ -27,8 +27,8 @@ def test_valid_login(
         )
     assert response.status_code == HTTPStatus.FOUND
 
-    response.url.startswith(str(LOGIN_REDIRECT_URL))
-    response = client.get(response.url)
+    response['location'].startswith(str(LOGIN_REDIRECT_URL))
+    response = client.get(response['location'])
     assert response.status_code == HTTPStatus.OK
 
 
@@ -39,7 +39,7 @@ def test_with_no_existing_user(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Test that login works with no existing user."""
-    post_data = login_data_factory(**{'username': 'no_such_user@test.com'})
+    post_data = login_data_factory(username='no_such_user@test.com')
     with monkeypatch.context() as patch:
         patch.setattr(User, 'check_password', lambda *args: True)
         response = client.post(
